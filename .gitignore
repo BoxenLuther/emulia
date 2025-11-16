@@ -1,0 +1,9 @@
+/bin/
+hs_err_pid*
+*.class
+*.ear
+*.jar
+*.nar
+*.war
+*.rar
+*.tar.gz

@@ -1,0 +1,253 @@
+# Insert your "cat /proc/sys/urlader/environment" here
+
+
+
+// AVM EVA Version 1.11334 0x0 0x46409
+// AVM EVA Version 1.11822 0x0 0xC6409
+// AVM EVA Version 1.947 0x0 0x340D
+
+
+
+urlader-version 1136
+urlader-version 1203
+urlader-version 1947
+
+urlader-version 2212
+urlader-version 2322
+urlader-version 2777
+
+
+bootloaderVersion 1.136
+bootloaderVersion 1.203
+bootloaderVersion 1.947
+
+bootloaderVersion 1.1212
+bootloaderVersion 1.1322
+bootloaderVersion 1.1777
+
+bootloaderVersion 1.3258
+bootloaderVersion 1.3614
+bootloaderVersion 1.10286
+bootloaderVersion 1.11177
+bootloaderVersion 1.11179
+bootloaderVersion 1.11275
+bootloaderVersion 1.11334
+bootloaderVersion 1.11549
+
+bootloaderVersion 1.11714
+bootloaderVersion 1.11722
+bootloaderVersion 1.11822
+
+
+
+
+mtd0 0x0,0x0
+mtd0 0x0,0x1C00000
+mtd0 0x0,0x2A00000
+mtd0 0x0,0x2C00000
+mtd0 0x0,0x4800000
+mtd0 0x400000,0x3400000
+mtd0 0x90000000,0x90000000
+
+mtd1 0x0,0x400000
+mtd1 0x3000000,0x8000000
+mtd1 0x4800000,0x5100000
+mtd1 0x48020000,0x48F80000
+mtd1 0x500000,0xD00000
+mtd1 0x900000,0x1100000
+mtd1 0x90010000,0x903C0000
+mtd1 0x90010000,0x90780000
+mtd1 0x980000,0x3B80000
+mtd1 0x9F020000,0x9FF00000
+mtd1 0xB00000,0x3D00000
+mtd1 0xB00000,0xF00000
+mtd1 0xD40000,0x1540000
+
+mtd2 0x0,0x100000
+mtd2 0x0,0x180000
+mtd2 0x0,0x2000000
+mtd2 0x0,0x2C0000
+mtd2 0x0,0x40000
+mtd2 0x0,0x540000
+mtd2 0x100000,0x300000
+mtd2 0x48000000,0x48020000
+mtd2 0x5100000,0x5300000
+mtd2 0x90000000,0x90010000
+mtd2 0x9F000000,0x9F020000
+
+mtd3 0x100000,0x500000
+mtd3 0x100000,0x900000
+mtd3 0x180000,0x980000
+mtd3 0x2000000,0x3000000
+mtd3 0x2C0000,0xB00000
+mtd3 0x300000,0xB00000
+mtd3 0x40000,0xA0000
+mtd3 0x48F80000,0x48FC0000
+mtd3 0x5300000,0x5B00000
+mtd3 0x540000,0xD40000
+mtd3 0x903C0000,0x903E0000
+mtd3 0x90780000,0x907C0000
+mtd3 0x9FF00000,0x9FF80000
+
+mtd4 0x0,0x0
+mtd4 0x1100000,0x1900000
+mtd4 0x1540000,0x1D40000
+mtd4 0x3B80000,0x6D80000
+mtd4 0x3D00000,0x6F00000
+mtd4 0x48FC0000,0x49000000
+mtd4 0x8000000,0xD000000
+mtd4 0x903E0000,0x90400000
+mtd4 0x907C0000,0x90800000
+mtd4 0x9FF80000,0xA0000000
+mtd4 0xA0000,0x100000
+mtd4 0xD00000,0x1500000
+mtd4 0xF00000,0x1300000
+
+mtd5 0x0,0x100000
+mtd5 0x0,0x200000
+mtd5 0x1300000,0x8000000
+mtd5 0x1500000,0x20000000
+mtd5 0x1900000,0x20000000
+mtd5 0x1D40000,0x8000000
+mtd5 0x5B00000,0xDB00000
+mtd5 0x6D80000,0x8000000
+mtd5 0xD000000,0x75BFC000
+mtd5 0xD000000,0x75FFBE00
+
+mtd6 0x6F00000,0x7F00000
+mtd6 0xDB00000,0xEE00000
+
+
+
+mtd7                  0xEE00000,0xF300000
+mtd8                  0x0,0x0
+mtd10                 0x0,0x0
+mtd11                 0xF300000,0x13B00000
+mtd12                 0x13B00000,0x14400000
+mtd13                 0x14400000,0x15700000
+mtd14                 0x15700000,0x15C00000
+
+jffs2_size            7
+jffs2_size            16
+jffs2_size            32
+
+
+
+
+
+
+
+flashsize             0x01000000 nor_size=0MB sflash_size=1024KB nand_size=512MB emmc_size=1888MB
+HardwareFeatures      spinand=0xA000000,nand=0xB000000000,cpu=666.0.0,emmc=9.0.99.0.0
+firstfreeaddress      0x80000000
+memsize               0x20000000
+modulemem             5000000
+
+
+
+bootloaderVersion     %dLoader%
+HWRevision            %dHWR%.1.0.0
+firmware_version      %dBranding%
+ProductID             Fritz_Box_HW999
+firmware_info         123.56.89
+annex                 B
+DMC                   RTL=y,SL1
+
+my_ipaddress          192.168.178.1
+country               049
+language              de
+bootserport           tty0
+autoload              yes
+linux_fs_start        0
+HWSubRevision         1
+
+prompt                AVM_Ar7
+prompt                Eva_AVM
+
+modetty1              38400,n,8,1,hw
+modetty0              38400,n,8,1,hw
+
+SerialNumber          X12345678901234
+SerialNumber          0000000000000000
+
+cpufrequency          666000000
+sysfrequency          666000000
+req_fullrate_freq     666000000
+
+tr069_passphrase      123456789012
+tr069_serial          00040E-ABCDEF00000A
+
+maca                  AB:CD:EF:00:00:0A
+macb                  AB:CD:EF:00:00:0B
+macwlan               AB:CD:EF:00:00:0C
+macwlan2              AB:CD:EF:00:00:0D
+macwlan3              AB:CD:EF:00:00:0E
+reserved              AB:CD:EF:00:00:05
+bluetooth             AB:CD:EF:00:00:06
+macdsl                AB:CD:EF:00:00:07
+usb_board_mac         AB:CD:EF:00:00:08
+usb_rndis_mac         AB:CD:EF:00:00:09
+usb_device_name       USB DSL Device
+usb_device_id         0x3C00
+usb_revision_id       0x0100
+usb_manufacturer_name AVM
+
+gpon_serial           AVMG0ABCDEF0
+webgui_pass           abcdef1234
+wlan_cal              1111,2222,3333,4444,5555,6666,7777,8888,9999
+wlan_key              1234567890123456
+wlan_key              12345678901234567890
+wlan_ssid             FRITZ!Box#1234#XX
+
+ptest
+crash
+kernel_args
+
+
+
+
+
+
+
+
+
+
+bootloaderVersion 1.11000
+
+
+
+// 7390
+mtd1                  0x9F020000,0x9FF00000
+mtd2                  0x9F000000,0x9F020000
+mtd3                  0x9FF00000,0x9FF80000
+mtd4                  0x9FF80000,0xA0000000
+
+// 7539
+mtd0:  0x0,0x0
+mtd1:  0xB00000,0x3D00000
+mtd2:  0x100000,0x300000
+mtd3:  0x300000,0xB00000
+mtd4:  0x3D00000,0x6F00000
+mtd5:  0x0,0x100000
+mtd6:  0x6F00000,0x7F00000
+
+// 3020
+// bootloaderVersion:  1.203
+mtd0:  0x90000000,0x90000000
+mtd1:  0x90010000,0x903C0000
+mtd2:  0x90000000,0x90010000
+mtd3:  0x903C0000,0x903E0000
+mtd4:  0x903E0000,0x90400000
+
+
+
+// 7590
+mtd0:  0x0,0x2C00000
+mtd1:  0x500000,0xD00000
+mtd2:  0x0,0x100000
+mtd3:  0x100000,0x500000
+mtd4:  0xD00000,0x1500000
+mtd5:  0x1500000,0x20000000
+
+
+# //TODO dynamic default device-config: HW -> autogen -> discarded ^^
