@@ -31,31 +31,31 @@ public class Searcher extends Thread {
 		for (Iterator<InetAddress> i = addresses.iterator(); i.hasNext();) {
 			current = i.next();
 			if (current.getHostAddress().startsWith(subnet))
-				return(current);
+				return (current);
 		}
 		// /16
 		subnet = subnet.substring(0, subnet.lastIndexOf('.') + 1);
 		for (Iterator<InetAddress> i = addresses.iterator(); i.hasNext();) {
 			current = i.next();
 			if (current.getHostAddress().startsWith(subnet))
-				return(current);
+				return (current);
 		}
 		// /8
 		subnet = subnet.substring(0, subnet.lastIndexOf('.') + 1);
 		for (Iterator<InetAddress> i = addresses.iterator(); i.hasNext();) {
 			current = i.next();
 			if (current.getHostAddress().startsWith(subnet))
-				return(current);
+				return (current);
 		}
 		// fallback
 		current = null;
 		try {
-			current = InetAddress.getByAddress(new byte[]{ (byte) 192, (byte) 168, (byte) 178, (byte) 1});
+			current = InetAddress.getByAddress(new byte[] { (byte) 192, (byte) 168, (byte) 178, (byte) 1 });
 		} catch (Exception e) {}
 		doLog("XX Fallback to " + current.getHostAddress().toString());
 		return current;
 	}
-	
+
 	private List<InetAddress> allEndpoints() {
 		List<InetAddress> addresses = new ArrayList<InetAddress>();
 
@@ -73,11 +73,11 @@ public class Searcher extends Thread {
 				} catch (Exception e) {}
 			}
 		} catch (Exception e) {}
-		
+
 		// fallback
 		if (addresses.isEmpty()) {
 			try {
-				addresses.add(InetAddress.getByAddress(new byte[]{ (byte) 192, (byte) 168, (byte) 178, (byte) 1}));
+				addresses.add(InetAddress.getByAddress(new byte[] { (byte) 192, (byte) 168, (byte) 178, (byte) 1 }));
 			} catch (Exception e) {}
 		}
 
@@ -85,7 +85,7 @@ public class Searcher extends Thread {
 			doLog("-- Using IP: " + i.next().getHostAddress().toString());
 		return addresses;
 	}
-	
+
 	@Override
 	public void run() {
 		final int broadcastPort = 5035;
@@ -114,27 +114,27 @@ public class Searcher extends Thread {
 					socketRX = new MulticastSocket(broadcastPort);
 				packetRX = new DatagramPacket(bufferRX, bufferRX.length);
 				socketRX.receive(packetRX);
-				doLog(null,""); // empty line
+				doLog(null, ""); // empty line
 				doLog("<< Request from " + packetRX.getAddress().getHostAddress() + ":" + packetRX.getPort());
-				
+
 				// ratelimit
 				remote = packetRX.getAddress().getHostAddress();
 				now = System.currentTimeMillis();
 				lastAnswer = lastRemotes.get(remote);
-				if (lastAnswer!=null && lastAnswer + 1000 > now) {
+				if (lastAnswer != null && lastAnswer + 1000 > now) {
 					doLog("OO Ratelimit hit for " + packetRX.getAddress().getHostAddress());
 					continue;
 				}
 				lastRemotes.put(remote, now);
 
 				// requestion
-				final byte[] addressBYT = new byte[] { bufferRX[8], bufferRX[9], bufferRX[10], bufferRX[11]};
-			    final InetAddress addressREQ = InetAddress.getByAddress(addressBYT);
+				final byte[] addressBYT = new byte[] { bufferRX[8], bufferRX[9], bufferRX[10], bufferRX[11] };
+				final InetAddress addressREQ = InetAddress.getByAddress(addressBYT);
 				doLog("XX Requested ip " + addressREQ.getHostAddress());
-						
+
 				// answering
 				final InetAddress addressLOC = getEndpoint(remote, addresses);
-				
+
 				byte[] barrayLOC = addressLOC.getAddress();
 				bufferTX[11] = (byte) barrayLOC[0];
 				bufferTX[10] = (byte) barrayLOC[1];
