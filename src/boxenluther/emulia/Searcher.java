@@ -1,6 +1,7 @@
 package boxenluther.emulia;
 
 import java.net.DatagramPacket;
+import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.net.NetworkInterface;
@@ -67,7 +68,7 @@ public class Searcher extends Thread {
 					if (nif.isUp())
 						for (Enumeration<InetAddress> ips = nif.getInetAddresses(); ips.hasMoreElements();) {
 							InetAddress nip = ips.nextElement();
-							if (!nip.isLoopbackAddress() && !nip.isMulticastAddress() && !nip.getHostAddress().contains(":"))
+							if (!nip.isLoopbackAddress() && !nip.isMulticastAddress() && !(nip instanceof Inet6Address && !nip.isLinkLocalAddress()))
 								addresses.add(nip);
 						}
 				} catch (Exception e) {}
