@@ -1,74 +1,58 @@
 package boxenluther.emulia;
 
-import java.net.ServerSocket;
-import java.net.Socket;
-
 public class Main {
-	static public boolean running = true;
-
-	static final private String tag = "SRV";
-	static private void doLog(String txt) {
-		Helper.doLog();
-		Helper.doLog(tag, txt);
-	}
 
 	public static void main(String[] args) {
+
 		String confFile = "_Generic";
 		if (args != null && args.length > 0)
 			confFile = args[0];
-	
+
 //TODO  load custom device-config on start -> discarded -> use args + collected ^^
+		try {
+			Class<?> debug = Class.forName(Main.class.getPackage().getName() + ".DEBUG");
+			confFile = (String) debug.getMethod("confFile", String.class).invoke(null, "");
+		} catch (Exception e) {}
 //		confFile = "DEVICE";	//DEVEL
 
 		int i = -1;
 		i = confFile.lastIndexOf("\\");
-		if (i>0)
-			confFile=confFile.substring(i);
+		if (i > 0)
+			confFile = confFile.substring(i);
 		i = confFile.lastIndexOf("/");
-		if (i>0)
-			confFile=confFile.substring(i);
+		if (i > 0)
+			confFile = confFile.substring(i);
 		i = confFile.lastIndexOf(".");
-		if (i>0)
-			confFile=confFile.substring(0,i);
+		if (i > 0)
+			confFile = confFile.substring(0, i);
 		confFile = Helper.chkConfigFile(confFile);
 		Helper.setConfigFile(confFile + ".txt");
 
 		final Device device = new Device(true);		// reload env on program start
 //		final Device device = null;					// reload env on every connect
+		Helper.doLog();
 
-		new Searcher().start();
 
-		ServerSocket listener = null;
-
-		try {
-			final int ftpcontrolPort = 21;
-			doLog("-- FTP-Server starting on " + ftpcontrolPort + "/tcp");
-			listener = new ServerSocket(ftpcontrolPort);
-		} catch (Exception e) {
-			doLog("XX Error creating listener: " + e.toString());
-			e.printStackTrace();
-			System.exit(1);
-			return;
+		final Searcher searcher = new Searcher();
+		searcher.start();
+		while (!searcher.ready) {
+			try { Thread.sleep(9); }
+			catch (Exception e) {}
 		}
 
-		while (running) {
-			try {
-				Socket socket = listener.accept();
-				doLog("<< Client connected from " + socket.getInetAddress().getHostAddress() + ":" + socket.getPort());
-				new Worker(device,socket).start();
-			} catch (Exception e) {
-				doLog("XX Error creating worker: " + e.toString());
-				e.printStackTrace();
-				running=false;
-			}
-		}
+		final Fastboot fastboot = new Fastboot(device);
+		fastboot.start();
 
-		try {
-			doLog("-- FTP-Server stopping");
-			listener.close();
-		} catch (Exception e) {}
+		final Dispatcher dispatcher = new Dispatcher(device);
+		dispatcher.start();
+
+		while (!fastboot.ready && !dispatcher.ready) {
+			try { Thread.sleep(9); }
+			catch (Exception e) {}
+		}
+		searcher.running = true;
+
 
 	}
-
 
 }

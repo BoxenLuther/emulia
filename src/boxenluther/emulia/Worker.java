@@ -38,7 +38,7 @@ public class Worker extends Thread {
 	}
 	private String myIdString() {
 		try {
-			return "T" + ( (Long)myIdMethod().invoke(this) ).toString();
+			return "T" + ((Long) myIdMethod().invoke(this)).toString();
 		} catch (Exception e) {}
 		return null;
 	}
@@ -50,7 +50,7 @@ public class Worker extends Thread {
 
 	public Worker(Device device, Socket socket) {
 		super();
-		if (device!=null)
+		if (device != null)
 			this.device = device;
 		else
 			this.device = new Device();
@@ -68,7 +68,7 @@ public class Worker extends Thread {
 	final private Device device;
 	final private String validUser = "adam2";
 	final private String validPass = "adam2";
-	
+
 	private String currentUser = "";
 	private String currentMode = "BINARY";
 	private String currentMedia = "FLASH";
@@ -88,30 +88,27 @@ public class Worker extends Thread {
 	private void datClose() {
 		try {
 			datWriter.close();
-		} catch (Exception e) {
-		}
+		} catch (Exception e) {}
 		datWriter = null;
 		try {
 			dataSocket.close();
-		} catch (Exception e) {
-		}
+		} catch (Exception e) {}
 		dataSocket = null;
 		try {
 			datServer.close();
-		} catch (Exception e) {
-		}
+		} catch (Exception e) {}
 		datServer = null;
 		doLog("-- DAT closed");
 	}
 
 	private void fileTX(String arg) {
 		String fileName = arg.toLowerCase();
-		
+
 		if (dataSocket == null) {
 			sendLine(501, "Error, no transfer mode");
 			return;
 		}
-		
+
 		switch (currentMode) {
 			case "BINARY":
 				break;
@@ -121,7 +118,7 @@ public class Worker extends Thread {
 				sendLine(425, "Use PORT or PASV first.");
 				return;
 		}
-		doLog("OO Sending: " + fileName);
+		doLog("OO Sending: " + new File(fileName).getName());
 
 		List<String> content = null;
 		switch (fileName) {
@@ -134,7 +131,7 @@ public class Worker extends Thread {
 				break;
 		}
 
-		if (content==null) {
+		if (content == null) {
 			if (!new File(fileName).exists()) {
 				sendLine(501, "Error, file does not exist");
 				return;
@@ -221,7 +218,7 @@ public class Worker extends Thread {
 				sendLine(501, "Error, invalid transfer mode");
 				return;
 		}
-		doLog("OO Receiving: " + fileName);
+		doLog("OO Receiving: " + new File(fileName).getName());
 
 		File file = new File(fileName);
 		if (file.exists()) {
@@ -325,7 +322,7 @@ public class Worker extends Thread {
 
 			// crc with filler FFs
 			for (int i = 0; i < filler; i++)
-				crc.update((byte) 255);					
+				crc.update((byte) 255);
 
 			doLog("%% imgSize :=" + dottedNum(imgSize));
 			doLog("%% mtdSize :=" + dottedNum(mtdSize));
@@ -343,14 +340,14 @@ public class Worker extends Thread {
 		int insertAt;
 		String ret = " " + arg;
 		insertAt = 7;
-		if (ret.length()>insertAt)
-			ret=ret.substring(0, ret.length()-insertAt+1) +"."+ ret.substring(ret.length()-insertAt+1);
+		if (ret.length() > insertAt)
+			ret = ret.substring(0, ret.length() - insertAt + 1) + "." + ret.substring(ret.length() - insertAt + 1);
 		insertAt = 4;
-		if (ret.length()>insertAt)
-			ret=ret.substring(0, ret.length()-insertAt+1) +"."+ ret.substring(ret.length()-insertAt+1);
-		while (ret.length()<12)
+		if (ret.length() > insertAt)
+			ret = ret.substring(0, ret.length() - insertAt + 1) + "." + ret.substring(ret.length() - insertAt + 1);
+		while (ret.length() < 12)
 			ret = " " + ret;
-		return ret;		
+		return ret;
 	}
 
 	public void run() {
@@ -360,18 +357,20 @@ public class Worker extends Thread {
 			sendLine(220, device.dAdam());
 
 			while (running) {
-				String line = ctlInReader.readLine();
 				String cmd = "";
 				String arg = "";
 				int sepidx = -1;
-				if (line != null) {
-					doLog("<< " + line);
-					if (line.toUpperCase().startsWith("QUOTE "))
-						line = line.substring(6);
-					sepidx = line.indexOf(' ');
-					cmd = (((sepidx == -1) ? line : (line.substring(0, sepidx)))).toUpperCase();
-					arg = ((sepidx == -1) ? "" : line.substring(sepidx + 1));
-				}
+				String line = ctlInReader.readLine();
+
+				if (line == null)
+					break;
+
+				doLog("<< " + line);
+				if (line.toUpperCase().startsWith("QUOTE "))
+					line = line.substring(6);
+				sepidx = line.indexOf(' ');
+				cmd = (((sepidx == -1) ? line : (line.substring(0, sepidx)))).toUpperCase();
+				arg = ((sepidx == -1) ? "" : line.substring(sepidx + 1));
 
 				switch (cmd) {
 					case "USER":
@@ -422,19 +421,18 @@ public class Worker extends Thread {
 							sendLine(device.getEnvVar(arg));
 							sendLine("");
 							sendLine(200, "GETENV command successful");
-						}
-						else
+						} else
 							sendLine(501, "environment variable not set");
 						break;
 					case "SETENV":
 						String key = arg;
 						String val = "";
 						final int i = arg.indexOf(' ');
-						if (i!=-1) {
-							key = arg.substring(0,i).trim();
+						if (i != -1) {
+							key = arg.substring(0, i).trim();
 							val = arg.substring(i).trim();
 						}
-						if (device.hadEnvVar(key) || Helper.allEnvVars.contains(key)) {
+						if (device.hadEnvVar(key)) {
 							device.setEnvVar(key, val);
 							sendLine(200, "SETENV command successful");
 						} else
@@ -456,7 +454,7 @@ public class Worker extends Thread {
 							sendLine(227, "Entering Passive Mode (" + host + "," + port + ")");
 							dataSocket = datServer.accept();
 							datWriter = new PrintWriter(dataSocket.getOutputStream(), true);
-							doLog("-- PAS opened");
+							doLog("++ PAS opened");
 						} catch (Exception e) {
 							doLog("XX PAS opening failed: " + e.getMessage());
 							e.printStackTrace();
@@ -470,7 +468,7 @@ public class Worker extends Thread {
 						try {
 							dataSocket = new Socket(host, port);
 							datWriter = new PrintWriter(dataSocket.getOutputStream(), true);
-							doLog("-- ACT opened");
+							doLog("++ ACT opened");
 							sendLine(200, "Command OK");
 						} catch (Exception e) {
 							doLog("XX ACT opening failed: " + e.getMessage());
@@ -506,7 +504,7 @@ public class Worker extends Thread {
 					case "V":
 					case "VER":
 					case "VERSION":
-						sendLine(200, "Emulia v1.0"); 
+						sendLine(200, "Emulia v1.0");
 						break;
 //					case "DEBUG":
 //						debugging=!debugging;
@@ -549,7 +547,7 @@ public class Worker extends Thread {
 			doLog("XX CTL failed: " + e.getMessage());
 //			e.printStackTrace();
 		}
-	
+
 		try {
 			ctlOutWriter.close();
 		} catch (Exception e) {}
