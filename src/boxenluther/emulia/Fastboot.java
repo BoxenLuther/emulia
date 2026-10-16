@@ -133,8 +133,6 @@ public class Fastboot extends Thread {
 			return false;
 		if (key.equals("debagger__user"))
 			return false;
-		if (key.startsWith("oem__"))
-			return false;
 		if (key.startsWith("ftp__"))
 			return false;
 		if (key.startsWith("counter__"))
@@ -599,7 +597,12 @@ public class Fastboot extends Thread {
 
 		switch (cmd) {
 			case "getvar":
-				String value = envGet(session, "oem__" + arg);
+				String value = null;
+				switch (arg) {
+					case "version-bootloader":
+						value = envGet(session, "ftp__uboot");
+						break;
+				}
 				if (value == null) {
 					doLog(session, "XX Variable missing: " + arg);
 					resultFAIL(session, "Variable not found");

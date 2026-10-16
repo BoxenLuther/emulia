@@ -151,9 +151,9 @@ public class Device {
 
 			// output
 //			doLog("-- Loaded " + mapEnv.size() + " environement items");
-			if (isUboot())
+			if (isSubmarine())
 				doLog("## " + minLen22("Uboot-Version") + dUboot());
-			else
+			if (isParadise())
 				doLog("## " + minLen22("FTP-Identification") + dEva());
 			for (String k : getEnv()) {
 				if (k.startsWith("debagger__user "))
@@ -245,8 +245,6 @@ public class Device {
 
 		// body
 		for (String key : sortedEnv) {
-			if (key.startsWith("oem__"))
-				continue;
 			if (key.startsWith("ftp__"))
 				continue;
 			if (key.startsWith("counter__"))
@@ -291,15 +289,18 @@ public class Device {
 		content.add(minLen22("run_years") + run_years);
 		return content;
 	}
-	private boolean isUboot() {
-		return mapEnv.containsKey("oem__version-bootloader");
+	public boolean isSubmarine() {
+		return mapEnv.containsKey("ftp__uboot");
 	}
 	public String dUboot() {
 		// from DieFlashe
-		if (mapEnv.containsKey("oem__version-bootloader"))
-			return mapEnv.get("oem__version-bootloader");
+		if (mapEnv.containsKey("ftp__uboot"))
+			return mapEnv.get("ftp__uboot");
 
 		return "U-Boot 2000.00-EMU-1.00";
+	}
+	public boolean isParadise() {
+		return mapEnv.containsKey("ftp__banner") && mapEnv.containsKey("ftp__system");
 	}
 	public String dAdam() {
 
