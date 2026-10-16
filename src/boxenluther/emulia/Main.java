@@ -37,13 +37,21 @@ public class Main {
 			catch (Exception e) {}
 		}
 
-		final Fastboot fastboot = new Fastboot(device);
-		fastboot.start();
+		final Boolean runFastboot = device == null || device.isSubmarine();
+		Fastboot fastboot = null;
+		if (runFastboot) {
+			fastboot = new Fastboot(device);
+			fastboot.start();
+		}
 
-		final Dispatcher dispatcher = new Dispatcher(device);
-		dispatcher.start();
+		final Boolean runDispatcher = device == null || device.isParadise();
+		Dispatcher dispatcher = null;
+		if (runDispatcher) {
+			dispatcher = new Dispatcher(device);
+			dispatcher.start();
+		}
 
-		while (!fastboot.ready && !dispatcher.ready) {
+		while ((runFastboot && !fastboot.ready) && (runDispatcher && !dispatcher.ready)) {
 			try { Thread.sleep(9); }
 			catch (Exception e) {}
 		}
